@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORTH | Plan My Trip</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f7fa;color:#26384a;padding:20px}
+.container{max-width:850px;margin:25px auto;background:white;border-radius:16px;padding:30px;box-shadow:0 5px 25px #00000012}
+.header{display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;padding-bottom:20px}
+.logo{width:48px;height:48px;background:#1F3A5F;color:white;display:grid;place-items:center;border-radius:12px;font-size:25px}
+.brand{font-size:23px;font-weight:bold;letter-spacing:3px;color:#1F3A5F}
+.subtitle{font-size:11px;color:#777;margin-top:4px}
+.intro{margin:28px 0}.intro span{color:#218b8b;font-size:12px;font-weight:bold;letter-spacing:2px}
+.intro h1{font-size:30px;margin:10px 0;color:#1F3A5F}.intro p{color:#718096;line-height:1.6}
+.steps{display:flex;justify-content:space-between;margin-bottom:15px}.step{display:flex;align-items:center;gap:7px;color:#888;font-size:13px}
+.circle{width:30px;height:30px;border:1px solid #ccc;border-radius:50%;display:grid;place-items:center}
+.step.active{color:#218b8b;font-weight:bold}.step.active .circle,.step.done .circle{background:#218b8b;color:white;border-color:#218b8b}
+.progress{height:7px;background:#e8edf0;border-radius:10px;margin-bottom:25px;overflow:hidden}
+.progress-bar{height:100%;width:25%;background:#218b8b;transition:.3s}
+.form-box{border:1px solid #e3e8ed;border-radius:12px;padding:24px}
+.form-box h2{font-size:21px;color:#1F3A5F;margin-bottom:10px}
+.description{color:#777;font-size:14px;margin-bottom:22px}
+label{font-size:14px;font-weight:bold;display:block;margin-bottom:8px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #dce2e8;border-radius:8px;font-size:14px;margin-bottom:18px;background:white}
+input:focus,select:focus,textarea:focus{outline:2px solid #218b8b;border-color:transparent}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.option{display:flex;gap:13px;align-items:flex-start;border:1px solid #dce2e8;border-radius:10px;padding:16px;margin-bottom:12px;cursor:pointer}
+.option:has(input:checked){border:2px solid #218b8b;background:#f0fafa;padding:15px}
+.option input{width:18px;height:18px;margin:2px 0;accent-color:#218b8b}
+.option p{color:#777;font-size:13px;margin-top:6px;line-height:1.5}
+.preferences{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.preference{border:1px solid #ddd;padding:12px;border-radius:8px;display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer}
+.preference input{width:17px;margin:0;accent-color:#218b8b}
+.budget-value{color:#218b8b;font-weight:bold;font-size:20px;margin-bottom:15px}
+input[type=range]{accent-color:#218b8b}
+.buttons{display:flex;justify-content:space-between;margin-top:20px;gap:12px}
+button{cursor:pointer;padding:13px 22px;border-radius:8px;border:none;font-weight:bold;font-size:14px}
+.primary{background:#1F3A5F;color:white}.primary:hover{background:#294e78}
+.secondary{background:white;border:1px solid #ccc;color:#333}
+button:disabled{opacity:.4;cursor:not-allowed}
+.notice{background:#eef5f7;padding:16px;border-radius:10px;margin-top:20px;font-size:14px;line-height:1.6}
+.notice span{color:#777;font-size:12px}
+.review{background:#f7f9fb;border-radius:9px;padding:15px;margin-bottom:12px}
+.review h3{color:#1F3A5F;margin-bottom:10px;font-size:15px}
+.review-row{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #e4e8ec;font-size:13px}
+.review-row:last-child{border:none}.review-row span{color:#777}
+.success{text-align:center;padding:35px 10px}
+.success-icon{width:85px;height:85px;background:#e1f5e9;color:#218b58;border-radius:50%;display:grid;place-items:center;font-size:45px;margin:0 auto 20px}
+.request-id{background:#f2f6f8;border-radius:10px;padding:20px;margin:25px 0;color:#1F3A5F}
+.hidden{display:none!important}.error{color:#d04444;font-size:13px;margin-top:8px}
+.footer{text-align:center;color:#888;font-size:12px;margin-top:30px}
+@media(max-width:600px){body{padding:10px}.container{padding:18px;margin:10px auto}.grid{grid-template-columns:1fr;gap:0}.preferences{grid-template-columns:1fr}.step{font-size:10px;gap:4px}.circle{width:26px;height:26px}.intro h1{font-size:25px}.form-box{padding:17px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><div class="logo">🏔️</div><div><div class="brand">NORTH</div><div class="subtitle">TRAVEL • SAFETY • DISCOVERY</div></div></div>
+<div class="intro"><span>YOUR JOURNEY STARTS HERE</span><h1>Plan My Trip</h1><p>Tell us what kind of experience you're looking for. Our team will help plan your journey across Gilgit-Baltistan.</p></div>
+<div class="steps" id="steps"><div class="step active"><div class="circle">1</div> Trip</div><div class="step"><div class="circle">2</div> Services</div><div class="step"><div class="circle">3</div> Budget</div><div class="step"><div class="circle">4</div> Review</div></div>
+<div class="progress"><div class="progress-bar" id="progress"></div></div>
+<div id="formArea"><div class="form-box"><div id="formContent"></div></div><div class="buttons"><button class="secondary" id="back" disabled>← Back</button><button class="primary" id="next">Continue →</button></div><div class="notice">💬 <b>A NORTH agent will contact you in chat, no payment now.</b><br><span>This is a trip request, not a confirmed booking.</span></div></div>
+<div id="successArea" class="hidden"><div class="success"><div class="success-icon">✓</div><h2 style="color:#1F3A5F">Your trip request is received!</h2><p style="color:#777;margin-top:12px;line-height:1.6">Thank you for choosing NORTH. Our travel agent will contact you in chat to discuss your trip details.</p><div class="request-id"><p style="font-size:12px;color:#777">YOUR REQUEST ID</p><h2 id="requestID" style="margin:10px 0">NORTH-000000</h2><button class="secondary" onclick="copyID()">Copy ID</button></div><div id="finalSummary" class="review" style="text-align:left"></div><button class="primary" onclick="resetForm()">+ Create Another Request</button></div></div>
+<div class="footer">NORTH © 2026 · Discover Gilgit-Baltistan, Pakistan</div>
+</div>
+<script>
+let currentStep=1;
+let trip={destination:"Hunza",other:"",start:"",end:"",travelers:2,services:["Hotel"],budget:30000,rooms:1,preferences:[],notes:""};
+const content=document.getElementById("formContent"),progress=document.getElementById("progress"),next=document.getElementById("next"),back=document.getElementById("back");
+function money(value){return "PKR "+Number(value).toLocaleString("en-PK")}
+function renderStep(){
+let html="";
+if(currentStep===1){html=`<h2>📍 Where are you going?</h2><p class="description">First, tell us about your journey.</p><label>Preferred Destination</label><select id="destination">${["Hunza","Skardu","Naltar Valley","Gilgit","Fairy Meadows","Nagar Valley","Multiple destinations","Other"].map(x=>`<option ${trip.destination===x?"selected":""}>${x}</option>`).join("")}</select><div id="otherField" class="${trip.destination==="Other"?"":"hidden"}"><label>Enter Destination</label><input id="other" value="${escapeHTML(trip.other)}" placeholder="Your destination"></div><div class="grid"><div><label>Departure Date</label><input type="date" id="start" min="2026-11-08" value="${trip.start}"></div><div><label>Return Date</label><input type="date" id="end" min="2026-11-08" value="${trip.end}"></div><div><label>Number of Travelers</label><input type="number" id="travelers" min="1" max="100" value="${trip.travelers}"></div></div><div class="error" id="error"></div>`}
+else if(currentStep===2){let services=[["Hotel","🏨","Comfortable accommodation for your stay."],["Vehicle with driver","🚙","Vehicle and experienced local driver."],["Full trip package","🏔️","Complete trip arrangement and planning."]];html=`<h2>🧳 What do you need?</h2><p class="description">Select one or more services.</p>${services.map(item=>`<label class="option"><input type="checkbox" name="service" value="${item[0]}" ${trip.services.includes(item[0])?"checked":""}><div><b>${item[1]} ${item[0]}</b><p>${item[2]}</p></div></label>`).join("")}<div class="error" id="error"></div>`}
+else if(currentStep===3){html=`<h2>💰 Budget & Preferences</h2><p class="description">Help us find options that match your expectations.</p><label>Total Estimated Trip Budget</label><div class="budget-value" id="budgetValue">${money(trip.budget)}</div><input type="range" id="budget" min="5000" max="500000" step="5000" value="${trip.budget}"><div class="grid"><div><label>Number of Rooms</label><input type="number" id="rooms" min="1" max="30" value="${trip.rooms}"></div><div><label>Travelers</label><input type="text" value="${trip.travelers} people" disabled></div></div><h3 style="margin:10px 0 15px;color:#1F3A5F">Travel Preferences</h3><div class="preferences">${[["Family-friendly","👨‍👩‍👧"],["Women-friendly accommodation","🛡️"],["Heating available","🔥"],["Parking available","🚗"]].map(item=>`<label class="preference"><input type="checkbox" name="preference" value="${item[0]}" ${trip.preferences.includes(item[0])?"checked":""}>${item[1]} ${item[0]}</label>`).join("")}</div><br><label>Additional Requirements (Optional)</label><textarea id="notes" rows="3" placeholder="Any additional requirements...">${escapeHTML(trip.notes)}</textarea><div class="error" id="error"></div>`}
+else if(currentStep===4){const row=(label,value)=>`<div class="review-row"><span>${label}</span><b>${escapeHTML(value||"Not specified")}</b></div>`;html=`<h2>✓ Review Your Trip Request</h2><p class="description">Check your information before submitting.</p><div class="review"><h3>📍 Trip Details</h3>${row("Destination",trip.destination==="Other"?trip.other:trip.destination)}${row("Departure",trip.start)}${row("Return",trip.end)}${row("Travelers",trip.travelers+" people")}</div><div class="review"><h3>🧳 Requested Services</h3>${row("Services",trip.services.join(", "))}</div><div class="review"><h3>💰 Budget & Preferences</h3>${row("Budget",money(trip.budget))}${row("Rooms",trip.rooms)}${row("Preferences",trip.preferences.join(", "))}${row("Additional Notes",trip.notes)}</div><div class="notice">💬 <b>A NORTH agent will contact you in chat, no payment now.</b></div><div class="error" id="error"></div>`}
+content.innerHTML=html;
+if(currentStep===1){document.getElementById("destination").addEventListener("change",e=>{trip.destination=e.target.value;renderStep()})}
+if(currentStep===3){document.getElementById("budget").addEventListener("input",e=>{trip.budget=Number(e.target.value);document.getElementById("budgetValue").textContent=money(trip.budget)})}
+updateProgress()
+}
+function updateProgress(){document.querySelectorAll(".step").forEach((el,index)=>{el.classList.toggle("active",index+1===currentStep);el.classList.toggle("done",index+1<currentStep);el.querySelector(".circle").textContent=index+1<currentStep?"✓":index+1});progress.style.width=(currentStep*25)+"%";back.disabled=currentStep===1;next.textContent=currentStep===4?"Submit Trip Request ✓":"Continue →"}
+function collectData(){
+if(currentStep===1){trip.destination=document.getElementById("destination").value;trip.other=document.getElementById("other")?.value.trim()||"";trip.start=document.getElementById("start").value;trip.end=document.getElementById("end").value;trip.travelers=Number(document.getElementById("travelers").value);let error="";if(trip.destination==="Other"&&!trip.other)error="Please enter your destination.";else if(!trip.start||!trip.end)error="Please select both travel dates.";else if(trip.end<trip.start)error="Return date must be after departure date.";else if(!Number.isInteger(trip.travelers)||trip.travelers<1||trip.travelers>100)error="Enter between 1 and 100 travelers.";if(error){document.getElementById("error").textContent=error;return false}}
+if(currentStep===2){trip.services=Array.from(document.querySelectorAll('input[name="service"]:checked')).map(x=>x.value);if(!trip.services.length){document.getElementById("error").textContent="Please select at least one service.";return false}}
+if(currentStep===3){trip.rooms=Number(document.getElementById("rooms").value);trip.preferences=Array.from(document.querySelectorAll('input[name="preference"]:checked')).map(x=>x.value);trip.notes=document.getElementById("notes").value;if(!Number.isInteger(trip.rooms)||trip.rooms<1||trip.rooms>30){document.getElementById("error").textContent="Please enter between 1 and 30 rooms.";return false}}
+return true
+}
+next.addEventListener("click",()=>{if(!collectData())return;if(currentStep<4){currentStep++;renderStep()}else submitRequest()});
+back.addEventListener("click",()=>{if(currentStep>1){currentStep--;renderStep()}});
+function submitRequest(){const requestID="NORTH-"+Math.random().toString(36).substring(2,6).toUpperCase()+"-"+Date.now().toString().slice(-5);document.getElementById("formArea").classList.add("hidden");document.getElementById("successArea").classList.remove("hidden");document.getElementById("requestID").textContent=requestID;document.getElementById("finalSummary").innerHTML=`<div class="review-row"><span>Destination</span><b>${escapeHTML(trip.destination==="Other"?trip.other:trip.destination)}</b></div><div class="review-row"><span>Travel Dates</span><b>${escapeHTML(trip.start)} – ${escapeHTML(trip.end)}</b></div><div class="review-row"><span>Travelers</span><b>${trip.travelers}</b></div><div class="review-row"><span>Services</span><b>${escapeHTML(trip.services.join(", "))}</b></div><div class="review-row"><span>Budget</span><b>${money(trip.budget)}</b></div>`}
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
+function copyID(){const id=document.getElementById("requestID").textContent;if(navigator.clipboard?.writeText){navigator.clipboard.writeText(id).then(()=>alert("Request ID copied!")).catch(()=>alert("Please copy manually: "+id))}else alert("Please copy manually: "+id)}
+function resetForm(){trip={destination:"Hunza",other:"",start:"",end:"",travelers:2,services:["Hotel"],budget:30000,rooms:1,preferences:[],notes:""};currentStep=1;document.getElementById("successArea").classList.add("hidden");document.getElementById("formArea").classList.remove("hidden");renderStep()}
+renderStep();
+</script>
+</body>
+</html>
